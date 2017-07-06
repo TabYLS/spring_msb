@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+	<!-- 注意， init-method="init" destroy-method="destroy"方法不能和 scope="prototype"这个属性一起使用 -->
+	<bean id="userDao" class="com.itcast.spring.ioc.lifeCycle.UserDaoImpl" init-method="init" destroy-method="destroy">
+		<property name="daoID" value="1"></property>
+	</bean>
+	
+	<bean id="userService" class="com.itcast.spring.ioc.lifeCycle.UserService" autowire="byName">
+		
+	</bean>
+</beans>

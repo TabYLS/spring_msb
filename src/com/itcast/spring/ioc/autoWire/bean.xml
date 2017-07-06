@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+	<bean id="userDao" class="com.itcast.spring.ioc.autoWire.UserDaoImpl">
+		<property name="daoID" value="1"></property>
+	</bean>
+	
+	<bean id="userDao2" class="com.itcast.spring.ioc.autoWire.UserDaoImpl">
+		<property name="daoID" value="1"></property>
+	</bean>
+
+	<bean id="userService" class="com.itcast.spring.ioc.autoWire.UserService" autowire="byName" lazy-init="default">
+		<!-- 使用自动注入可以不用使用<property/>标签 -->
+		<!-- 如果设置：autowire="byName"则会自动根据名字进行注入，这个就是要求UserService里面有userDao引用 -->
+		<!-- 如果设置autowire="byType"则是根据类型进行自动的注入，但是不能有两个相同类型的bean -->
+	</bean>
+</beans>
