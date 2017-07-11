@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-2.5.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop-2.5.xsd" >
+	<!-- 启用注解 -->
+	<context:annotation-config />
+	<!-- 自动扫描 -->
+	<context:component-scan base-package="com.itcast.spring.aop.xml" />
+	
+	<!-- 	首先会生成切面逻辑对象，
+			当程序运行到UserService的add方法的时候，发现符合切入点的规则
+			然后这个这个aop的配置当中有一个切面，并且这个切面上面有该切入点，
+			于是就按照切面上的要求运行切面逻辑对象上的方法
+	 -->
+	<!--1.初始化切面逻辑类的bean -->
+	<bean id="logInterceptor" class="com.itcast.spring.aop.xml.LogInterceptor" />
+	<!-- 配置方式一：全局pointcut（全局可以被整个aop中的所有aspect使用(<aop:config>里面的所有<aop:aspect>)）
+	2.配置aop的config
+	<aop:config>
+		3.指定切入点（指定规则）
+		<aop:pointcut expression="execution(public * com.itcast.spring.aop..*Service.add(..))"
+			id="wholCut" />
+		4.生成切面
+		<aop:aspect id="logAspect" ref="logInterceptor">
+			<aop:before method="beforeMethod" pointcut-ref="wholCut"/>
+			<aop:after method="afterMethod" pointcut-ref="wholCut" />
+		</aop:aspect>
+	</aop:config> --> 
+	
+	<!--配置方式二：局部pointcut(只能被指定的aop:aspect使用)
+	2.配置aop的config 
+	<aop:config>
+		4.生成切面
+		<aop:aspect id="logAspect" ref="logInterceptor">
+			3.指定切入点（指定规则）
+			<aop:pointcut expression="execution(public * com.itcast.spring.aop..*Service.add(..))"
+				id="wholCut" />
+			<aop:before method="beforeMethod" pointcut-ref="wholCut"/>
+			<aop:after method="afterMethod" pointcut-ref="wholCut" />
+		</aop:aspect>
+	</aop:config> -->
+	
+	<!-- 配置方式三：内部pointcut(具体的处理方式上面加上pointcut)-->
+	<!-- 2.配置aop的config -->
+	<aop:config>
+		<!-- 4.生成切面 -->
+		<aop:aspect id="logAspect" ref="logInterceptor">
+			<!-- 3.将指定切入点（指定规则）放入具体的处理方式中 -->
+			<aop:before method="beforeMethod" pointcut="execution(public * com.itcast.spring.aop..*Service.add(..))" />
+			<aop:after method="afterMethod" pointcut="execution(public * com.itcast.spring.aop..*Service.add(..))" />
+		</aop:aspect>
+	</aop:config>
+
+</beans>
